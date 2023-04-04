@@ -6,6 +6,25 @@ use Laravel\Nova\Fields\Field;
 
 class Datefield extends Field
 {
+
+    public function __construct($name, $attribute = null, callable $resolveCallback = null)
+    {
+        $Field = 'ok';
+        parent::__construct($name, $attribute, $resolveCallback);
+        $defaultOptions = [
+            'enableTime' => false,
+            'dateFormat' => 'Y-m-d',
+            'altInput' => true,
+            'altFormat' => 'Y-m-d',
+            'defaultDate'=> $this->value,
+            'time_24hr' => true,
+            'allowInput' => true,
+            'locale' => app()->getLocale(),
+        ];
+        $this->withMeta(['options' =>$defaultOptions]);
+    }
+
+
     /**
      * The field's component.
      *
@@ -16,8 +35,10 @@ class Datefield extends Field
 
 
 
-    public function format($format)
+    public function options(array $optons)
     {
-        return $this->withMeta(['format' => $format]);
+        $optons['locale'] = $optons['locale']??app()->getLocale();
+
+        return $this->withMeta(['options' => $optons]);
     }
 }

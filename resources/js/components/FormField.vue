@@ -9,21 +9,12 @@
             <div class="flex items-center">
                 <flat-pickr
                     v-model="value"
-
                     class="form-control form-input form-input-bordered"
                     :dusk="field.attribute"
                     :name="field.name"
                     :disabled="currentlyIsReadonly"
-
-                    :config="{
-            enableTime: false,
-            dateFormat: formating,
-            altInput: true,
-            altFormat: formating,
-            defaultDate: value,
-            time_24hr: true,
-            allowInput:true
-            }"
+                    id="datepicker"
+                    :config="configs"
                 />
             </div>
         </template>
@@ -35,20 +26,27 @@ import {FormField, HandlesValidationErrors} from 'laravel-nova'
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import isNil from "lodash/isNil";
-import {DateTime} from 'luxon'
+import {DateTime} from 'luxon';
+
+import {Arabic as ar} from '../../../dist/js/ar.js'
 
 export default {
     components: {FlatPickr},
     mixins: [FormField, HandlesValidationErrors],
 
-    props: ['resourceName', 'resourceId', 'field', 'format'],
+    props: ['resourceName', 'resourceId', 'field', 'options'],
 
     data() {
         return {
             date: null,
             currentlyIsReadonly: false,
             value: null,
-            formating: this.field.format || 'Y-m-d',
+            configs: this.field.options,
+            ar: {},
+            //  options: this.field.options ,
+            currentTheme: localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light',
+            theme: this.currentTheme || 'light',
+
         }
     },
     methods: {
@@ -62,7 +60,12 @@ export default {
                 }).toISODate()
             }
 
-            // this.date = this.value
+            console.log('getMediaPreference', this.currentTheme)
+
+
+            this.configs.theme = this.currentTheme
+
+            // loadCss(this.currentTheme);
         },
 
         /**
@@ -89,9 +92,19 @@ export default {
     },
 
     mounted() {
-        console.log('mounted', this.formating)
         this.setInitialValue()
 
+        loadCss(this.currentTheme);
     }
 }
+
+function loadCss(themeRequired) {
+    if (themeRequired === 'dark') {
+        require("flatpickr/dist/themes/dark.css");
+
+    } else {
+        require("flatpickr/dist/themes/light.css");
+    }
+}
+
 </script>
