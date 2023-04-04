@@ -9,6 +9,7 @@
 ### Note
 This Package extends the Native Nova Date Field. you can use all the options provided by Nova in addition to a customizable flatpickr config oprions
 
+#### This package supports only English and Arabic Locales. Hope to find a good way to make it dynamic in the future
 ### Installation
 ###### You can install the package via Composer:
 
@@ -109,7 +110,7 @@ For more information on each option, see the [flatpickr](https://flatpickr.js.or
 The following preset options are added by default to the configuration:
 
 * locale:  It will resolve to the current locale of the application. you need to add the locale file in the flatpickr folder in the public folder of your application
-* This version only supports Arabic and English locales. Hope to find a good way to make it dynamic in the future
+* This version only supports Arabic and English locales. Hope to find a good way to make it dynamic in the future (Any Contribution is welcome)
 
 ### Theme
 * The system is using the default flatpickr themes Dark and Light. 
